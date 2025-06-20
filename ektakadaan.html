@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>এক টাকা দান</title>
+<style>
+  body {
+    font-family: 'SolaimanLipi', sans-serif;
+    background: #f9f9f9;
+    margin: 0; padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .container {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
+  h1 {
+    color: #27ae60;
+    margin-bottom: 20px;
+  }
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 600;
+    text-align: left;
+  }
+  input[type="text"], input[type="tel"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+  }
+  select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+  }
+  button {
+    margin-top: 25px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 15px;
+    width: 100%;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #219150;
+  }
+  .thankyou {
+    display: none;
+    margin-top: 20px;
+    color: #27ae60;
+    font-weight: 700;
+  }
+  .payment-links {
+    margin-top: 20px;
+    text-align: left;
+  }
+  .payment-links a {
+    display: block;
+    margin: 10px 0;
+    background: #eee;
+    padding: 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+  }
+  .payment-links a:hover {
+    background: #d4efdf;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>এক টাকা দান</h1>
+  <form id="donationForm">
+    <label for="name">নাম</label>
+    <input type="text" id="name" placeholder="আপনার নাম লিখুন" required />
+
+    <label for="phone">মোবাইল নম্বর</label>
+    <input type="tel" id="phone" placeholder="০১XXXXXXXXX" pattern="[০-৯0-9]{11}" required />
+
+    <label for="paymentMethod">পেমেন্ট মাধ্যম</label>
+    <select id="paymentMethod" required>
+      <option value="" disabled selected>পছন্দ করুন</option>
+      <option value="bkash">বিকাশ</option>
+      <option value="rocket">রকেট</option>
+      <option value="bank">ব্যাংক একাউন্ট</option>
+    </select>
+
+    <button type="submit">১ টাকা দান করুন</button>
+  </form>
+
+  <div class="thankyou" id="thankyouMessage">
+    ধন্যবাদ আপনার ১ টাকা দানের জন্য! নিচের লিঙ্ক থেকে পেমেন্ট সম্পন্ন করুন।
+  </div>
+
+  <div class="payment-links" id="paymentLinks" style="display:none;"></div>
+</div>
+
+<script>
+  const donationForm = document.getElementById('donationForm');
+  const thankyouMessage = document.getElementById('thankyouMessage');
+  const paymentLinks = document.getElementById('paymentLinks');
+
+  donationForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const method = document.getElementById('paymentMethod').value;
+
+    if (!name || !phone || !method) {
+      alert('সব ফিল্ড পূরণ করুন।');
+      return;
+    }
+
+    donationForm.style.display = 'none';
+    thankyouMessage.style.display = 'block';
+    paymentLinks.style.display = 'block';
+
+    paymentLinks.innerHTML = '';
+
+    const bkashNumber = '+8801894390947';
+    const rocketNumber = '+8801894390947';
+    const bankInfo = `
+      <strong>ব্যাংক একাউন্ট তথ্য:</strong><br/>
+      একাউন্ট নাম: Hridoy Hasan<br/>
+      ব্যাংক: Dutch Bangla Bank (Dbbl)<br/>
+      শাখা: Faridpur<br/>
+      একাউন্ট নম্বর: 189 158 0252984
+    `;
+
+    if (method === 'bkash') {
+      paymentLinks.innerHTML = `<a href="tel:*247*1*${bkashNumber}*1#" target="_blank">বিকাশ দিয়ে ১ টাকা পাঠাতে কল করুন</a>`;
+    } else if (method === 'rocket') {
+      paymentLinks.innerHTML = `<a href="tel:*322*1*${rocketNumber}*1#" target="_blank">রকেট দিয়ে ১ টাকা পাঠাতে কল করুন</a>`;
+    } else if (method === 'bank') {
+      paymentLinks.innerHTML = bankInfo;
+    }
+  });
+</script>
+
+</body>
+</html>
